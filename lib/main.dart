@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
-import 'dart:async';
 
 void main() {
   runApp(MyApp());
@@ -33,9 +32,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Position? _currentPosition; // Menyimpan data lokasi
   String? _errorMessage; // Menyimpa pesan error
   StreamSubscription<Position>? _positionStream; // Penyimpan stream
-  String? currentAddress;
-
-  // Variabel untuk Latihan 1 dan 2 telah dihapus dari versi ini
+  String? currentAddress; // Menyimpan alamat dari koordinat
 
   @override
   void dispose() {
@@ -103,7 +100,7 @@ class _MyHomePageState extends State<MyHomePage> {
         _errorMessage = null; // Hapus error jika sukses
       });
 
-      getAddressFromLatLng(position);
+      getAddressFromLatLng(position);// Dapatkan alamat dari koordinat
     } catch (e) {
       setState(() {
         _errorMessage = e.toString(); // Tampilkan error di UI
@@ -129,7 +126,7 @@ class _MyHomePageState extends State<MyHomePage> {
               _currentPosition = position;
               _errorMessage = null;
             });
-            getAddressFromLatLng(position);
+            getAddressFromLatLng(position);// Dapatkan alamat dari koordinat
            
           });
     } catch (e) {
@@ -196,6 +193,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
 
                 SizedBox(height: 16),
+                
                 // Tampilkan Alamat
                 if (currentAddress != null)
                   Text(
