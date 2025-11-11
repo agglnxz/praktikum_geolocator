@@ -33,6 +33,10 @@ class _MyHomePageState extends State<MyHomePage> {
   String? _errorMessage; // Menyimpa pesan error
   StreamSubscription<Position>? _positionStream; // Penyimpan stream
   String? currentAddress; // Menyimpan alamat dari koordinat
+  String? distanceToPNB; // Menyimpan jarak ke PNB
+
+  final double pnbLatitude = -8.7849; // Latitude PNB
+  final double pnbLongitude = 115.2184; // Longitude PNB
 
   @override
   void dispose() {
@@ -120,12 +124,23 @@ class _MyHomePageState extends State<MyHomePage> {
       // Mulai mendengarkan stream
       _positionStream =
           Geolocator.getPositionStream(
-            locationSettings: locationSettings,
-          ).listen((Position position) {
+            locationSettings: locationSettings,).listen((Position position) {
+            // Tambahan: Hitung jarak ke PNB
+            double distanceInMeters = Geolocator.distanceBetween(
+              position.latitude,
+              position.longitude,
+              pnbLatitude,
+              pnbLongitude,
+            );
             setState(() {
               _currentPosition = position;
               _errorMessage = null;
             });
+            if (distanceInMeters > 1000) {
+                distanceToPNB = "${(distanceInMeters / 1000).toStringAsFixed(2)}km";
+            } else {
+                distanceToPNB = "${distanceInMeters.toStringAsFixed(0)} m";
+            }
             getAddressFromLatLng(position);// Dapatkan alamat dari koordinat
            
           });
@@ -140,6 +155,7 @@ class _MyHomePageState extends State<MyHomePage> {
     _positionStream?.cancel(); // Hentikan stream
     setState(() {
       _errorMessage = "Pelacakan dihentikan.";
+      distanceToPNB = null;
     });
   }
 
@@ -201,7 +217,17 @@ class _MyHomePageState extends State<MyHomePage> {
                     textAlign: TextAlign.center,
                     style: TextStyle(fontSize: 16),
                   ),
-                //
+                SizedBox(height: 16),
+
+                // Tampilkan Jarak ke PNB
+                if (distanceToPNB != null)
+                  Text(
+                    "Jarak ke PNB: $distanceToPNB",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  ),
+                SizedBox(height: 16),
+                
                 ElevatedButton.icon(
                   icon: Icon(Icons.location_searching),
                   label: Text('Dapatkan Lokasi Sekarang'),

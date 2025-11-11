@@ -24,3 +24,20 @@ dan startTracking (di dalam .listen()) setelah setState untuk currentPosition.
 
 Hasil project praktikum
 ![alt text](hasilProject.jpeg)
+
+
+## tugas 2 Jarak Real-time ke Titik Tetap
+
+1. Buat variabel String? distanceToPNB; di MyHomePageState.
+![alt text](image-7.png)
+2. Di dalam startTracking (di dalam .listen()), panggil fungsi untuk menghitung
+jarak:
+![alt text](image-9.png)
+3. Simpan hasilnya di distanceToPNB menggunakan setState.
+![alt text](image-10.png)
+4. Tampilkan distanceToPNB di UI agar jaraknya ter-update secara real-time saat
+Anda bergerak
+![alt text](image-11.png)
+
+Hasil Tugas 2
+![alt text](tugas2.jpeg)
